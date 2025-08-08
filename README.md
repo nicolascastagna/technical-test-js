@@ -1,4 +1,4 @@
-# CONSIGNES POUR LE TEST D'EMBAUCHE - DÉVELOPPEUR JAVASCRIPT/NODE.JS
+# Test Recrutement - Développeur JavaScript/Node.js
 
 ## 📋 Informations générales
 
@@ -10,12 +10,15 @@
 
 Ce test évalue vos compétences en JavaScript pour travailler sur notre application de gestion de commandes dentaires. Vous devrez compléter 6 fonctions qui représentent des cas d'usage réels de notre système.
 
-## 📂 Fichiers fournis
+## 📂 Structure du projet
 
-- `test-embauche.js` : Le fichier de test à compléter (À RENDRE)
-- `corrige-test-embauche.js` : Le corrigé (NE PAS CONSULTER pendant le test)
-- `README.md` : Ce fichier de consignes
-- `explications-detaillees.md` : Explications détaillées avec la correction
+Ce dépôt contient :
+
+- **`QCM Csharp/`** - Questionnaire C# au format PDF
+  - `QCM C# - Test d'Évaluation Technique.pdf`
+- **`test javascript/`** - Test technique JavaScript
+  - `test-embauche.js` : Le fichier de test à compléter (À RENDRE)
+  - `README.md` : Documentation du test JavaScript
 
 ## 🔧 Configuration requise
 
@@ -23,7 +26,7 @@ Ce test évalue vos compétences en JavaScript pour travailler sur notre applica
 - Un éditeur de code (VS Code recommandé)
 - Connaissances en JavaScript ES6+
 
-## 📝 Structure du test
+## 📝 Structure du test JavaScript
 
 Le test contient 6 exercices de difficulté croissante :
 
@@ -47,7 +50,7 @@ Valider les données d'un client avec vérifications métier.
 
 ## 🚀 Comment commencer
 
-1. **Ouvrez le fichier `test-embauche.js`**
+1. **Ouvrez le fichier `test javascript/test-embauche.js`**
 2. **Lisez attentivement chaque exercice**
 3. **Complétez les fonctions marquées `// TODO:`**
 4. **Testez votre code avec la fonction `executerTests()`**
@@ -55,6 +58,9 @@ Valider les données d'un client avec vérifications métier.
 ### Pour tester votre code :
 
 ```bash
+# Naviguez vers le dossier
+cd "test javascript"
+
 # Décommentez la ligne à la fin du fichier test-embauche.js :
 # executerTests();
 
@@ -159,8 +165,8 @@ Ajoutez un commentaire en en-tête avec :
 ## 📞 Contact
 
 En cas de problème technique majeur ou de question sur les consignes, contactez :
-- Email : [EMAIL_RECRUTEUR]
-- Téléphone : [NUMERO_RECRUTEUR]
+- Email : j.djimbi@biotech-dental-digital.com
+
 
 ---
 
