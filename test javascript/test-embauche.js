@@ -198,7 +198,6 @@ function creerNouvelleCommande(clientId, refClient, commentaire, articlesData) {
     }
 
     const client = clients.find((c) => c._id === clientId);
-
     if (!client) {
         return null;
     }
@@ -314,6 +313,37 @@ function mettreAJourStatutArticle(commandeId, lotArticle, nouveauStatut) {
     // 3. Mettez à jour le statut
     // 4. Vérifiez si tous les articles sont livrés pour marquer la commande comme livrée
     // 5. Retournez true si succès, false sinon
+
+    if (!commandeId || !lotArticle || !nouveauStatut) {
+        return false;
+    }
+
+    if (obtenirNomStatut(nouveauStatut) === "Inconnu") {
+        return false;
+    }
+
+    const commande = commandes.find((cmd) => cmd._id === commandeId);
+    if (!commande) {
+        return false;
+    }
+
+    const articleIndex = commande.articles?.findIndex(
+        (art) => art.Lot === lotArticle
+    );
+    if (articleIndex === -1) {
+        return false;
+    }
+
+    commande.articles[articleIndex].Statut = nouveauStatut;
+
+    const ArticlesLivres = commande.articles.every(
+        (article) => article.Statut === 70
+    );
+    if (ArticlesLivres) {
+        commande.Statut = "livre";
+    }
+
+    return true;
 }
 
 /**
