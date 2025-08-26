@@ -268,6 +268,37 @@ function rechercherCommandes(criteres) {
     // Filtrez le tableau commandes selon les critères fournis
     // Gérez les cas où certains critères sont undefined/null
     // Retournez un tableau des commandes correspondantes
+
+    if (!criteres || typeof criteres !== "object") {
+        return [...commandes];
+    }
+
+    // Destructuration des critères
+    const { clientId, statut, dateDebut, dateFin, montantMin, montantMax } =
+        criteres;
+
+    return commandes.filter((commande) => {
+        if (clientId && commande.client?._id !== clientId) {
+            return false;
+        }
+        if (statut && commande.Statut !== statut) {
+            return false;
+        }
+        if (dateDebut && commande.Date < new Date(dateDebut)) {
+            return false;
+        }
+        if (dateFin && commande.Date > new Date(dateFin)) {
+            return false;
+        }
+        if (montantMin != null && commande.Montant_HT < montantMin) {
+            return false;
+        }
+        if (montantMax != null && commande.Montant_HT > montantMax) {
+            return false;
+        }
+
+        return true;
+    });
 }
 
 /**
@@ -369,11 +400,11 @@ function executerTests() {
         [
             {
                 _id: "CIC2",
-                libelle: "Couronne Implanto Céramo",
-                type: 2,
-                material: 2,
-                pu_ht: 320,
-                dents: [26],
+                Libelle: "Couronne Implanto Céramo",
+                Type: 2,
+                Material: 2,
+                PU_HT: 320,
+                Dents: [26],
             },
         ]
     );
