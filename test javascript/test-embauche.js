@@ -356,6 +356,24 @@ function genererRapportParType() {
     // Parcourez toutes les commandes et leurs articles
     // Comptez les articles par type (0: Amovible, 1: Dento, 2: Implanto, 3: Autre)
     // Retournez un objet : { "Amovible": count, "Dento": count, "Implanto": count, "Autre": count }
+
+    const rapport = {
+        Amovible: 0,
+        Dento: 0,
+        Implanto: 0,
+        Autre: 0,
+    };
+
+    commandes?.forEach((commande) => {
+        commande.articles?.forEach((article) => {
+            const nomType = obtenirNomType(article.Type); // Conversion : 0: Amovible, 1: Dento, 2: Implanto, 3: Autre
+            if (rapport.hasOwnProperty(nomType)) {
+                rapport[nomType]++;
+            }
+        });
+    });
+
+    return rapport;
 }
 
 /**
