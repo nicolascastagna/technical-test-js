@@ -1,9 +1,10 @@
 /**
- * TEST D'EMBAUCHE - DÉVELOPPEUR JAVASCRIPT/NODE.JS
+ * TEST D'EMBAUCHE COMPLÉTÉ
  * Système de Gestion de Commandes Dentaires
  *
- * Temps estimé : 2-3 heures
- * Points : 100 points au total
+ * Temps estimé : 2h30 approximatif
+ * Candidat : Nicolas Castagna
+ * Date : 26/08/25
  *
  * CONSIGNES :
  * - Complétez les fonctions manquantes
@@ -148,11 +149,6 @@ function initTestData() {
  * Prend en compte : PU_HT * Qte - (PU_HT * Qte * Remise / 100)
  */
 function calculerMontantCommande(commande) {
-    // TODO: Complétez cette fonction
-    // Parcourez tous les articles de la commande
-    // Calculez le montant pour chaque article en tenant compte de la remise
-    // Retournez le montant total HT
-
     if (!commande?.articles?.length) {
         return 0;
     }
@@ -166,7 +162,7 @@ function calculerMontantCommande(commande) {
         totalHt += montantHt - remise;
     }
 
-    return totalHt;
+    return +totalHt.toFixed(2);
 }
 
 /**
@@ -179,15 +175,6 @@ function calculerMontantCommande(commande) {
  * - La date d'expédition (1 jour ouvrable avant la livraison)
  */
 function creerNouvelleCommande(clientId, refClient, commentaire, articlesData) {
-    // TODO: Complétez cette fonction
-    // 1. Vérifiez que le client existe
-    // 2. Créez une nouvelle instance de Commande
-    // 3. Remplissez les champs automatiquement
-    // 4. Créez les articles à partir d'articlesData
-    // 5. Calculez le montant total
-    // 6. Ajoutez la commande au tableau commandes
-    // 7. Retournez la commande créée ou null en cas d'erreur
-
     // Validation des params
     if (!clientId) {
         return null;
@@ -263,11 +250,7 @@ function creerNouvelleCommande(clientId, refClient, commentaire, articlesData) {
  * Critères possibles : clientId, statut, dateDebut, dateFin, montantMin, montantMax
  */
 function rechercherCommandes(criteres) {
-    // TODO: Complétez cette fonction
-    // Filtrez le tableau commandes selon les critères fournis
-    // Gérez les cas où certains critères sont undefined/null
-    // Retournez un tableau des commandes correspondantes
-
+    // Retourne toutes les commandes si aucun critère
     if (!criteres || typeof criteres !== "object") {
         return [...commandes];
     }
@@ -307,17 +290,12 @@ function rechercherCommandes(criteres) {
  *                    40: Production, 50: Controle, 60: Expedie, 70: Livre, 500: Annule
  */
 function mettreAJourStatutArticle(commandeId, lotArticle, nouveauStatut) {
-    // TODO: Complétez cette fonction
-    // 1. Trouvez la commande par son ID
-    // 2. Trouvez l'article par son lot
-    // 3. Mettez à jour le statut
-    // 4. Vérifiez si tous les articles sont livrés pour marquer la commande comme livrée
-    // 5. Retournez true si succès, false sinon
-
+    // Validation des params
     if (!commandeId || !lotArticle || !nouveauStatut) {
         return false;
     }
 
+    // Validité du statut
     if (obtenirNomStatut(nouveauStatut) === "Inconnu") {
         return false;
     }
@@ -327,6 +305,7 @@ function mettreAJourStatutArticle(commandeId, lotArticle, nouveauStatut) {
         return false;
     }
 
+    // Recherche de l'article par son lot
     const articleIndex = commande.articles?.findIndex(
         (art) => art.Lot === lotArticle
     );
@@ -334,6 +313,7 @@ function mettreAJourStatutArticle(commandeId, lotArticle, nouveauStatut) {
         return false;
     }
 
+    // Mise à jour du statut de l'article
     commande.articles[articleIndex].Statut = nouveauStatut;
 
     const ArticlesLivres = commande.articles.every(
@@ -352,11 +332,6 @@ function mettreAJourStatutArticle(commandeId, lotArticle, nouveauStatut) {
  * Doit retourner un objet avec le nombre de commandes par type
  */
 function genererRapportParType() {
-    // TODO: Complétez cette fonction
-    // Parcourez toutes les commandes et leurs articles
-    // Comptez les articles par type (0: Amovible, 1: Dento, 2: Implanto, 3: Autre)
-    // Retournez un objet : { "Amovible": count, "Dento": count, "Implanto": count, "Autre": count }
-
     const rapport = {
         Amovible: 0,
         Dento: 0,
@@ -382,12 +357,77 @@ function genererRapportParType() {
  * Doit vérifier : email valide, téléphone valide, adresse complète
  */
 function validerDonneesClient(client) {
-    // TODO: Complétez cette fonction
-    // Vérifiez que tous les champs obligatoires sont remplis
-    // Validez le format de l'email
-    // Validez le format du téléphone français
-    // Vérifiez que l'adresse est complète (Adr1, CP, Ville)
-    // Retournez un objet : { valide: boolean, erreurs: string[] }
+    const erreurs = [];
+
+    // Validation de la structure de base du client
+    if (!client || typeof client !== "object") {
+        return { valide: false, erreurs: ["Client invalide"] };
+    }
+
+    // Validation du nom (obligatoire)
+    if (typeof client.Nom !== "string" || !client.Nom.trim()) {
+        erreurs.push("Le nom est obligatoire");
+    }
+
+    // Validation du prénom (obligatoire)
+    if (typeof client.Prenom !== "string" || !client.Prenom.trim()) {
+        erreurs.push("Le prénom est obligatoire");
+    }
+
+    // Validation de l'email (obligatoire + format)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (typeof client.Email !== "string" || !client.Email.trim()) {
+        erreurs.push("L'email est obligatoire");
+    } else if (!emailRegex.test(client.Email.trim())) {
+        erreurs.push("Format d'email invalide");
+    }
+
+    // Validation du téléphone français (obligatoire + format)
+    const telephoneRegex = /^0[1-9](\d{8})$/;
+    if (typeof client.Telephone !== "string" || !client.Telephone.trim()) {
+        erreurs.push("Le téléphone est obligatoire");
+    } else {
+        // Nettoyage des caractères de formatage (espaces, tirets, points)
+        const telephoneClean = client.Telephone.replace(/[\s\-\.]/g, "");
+        if (!telephoneRegex.test(telephoneClean)) {
+            erreurs.push(
+                "Format de téléphone français invalide (10 chiffres, commence par 0)"
+            );
+        }
+    }
+
+    // Validation de l'adresse (structure + champs obligatoires)
+    if (!client.Adresse || typeof client.Adresse !== "object") {
+        erreurs.push("Adresse manquante");
+    } else {
+        if (
+            typeof client.Adresse.Adr1 !== "string" ||
+            !client.Adresse.Adr1.trim()
+        ) {
+            erreurs.push("L'adresse (ligne 1) est obligatoire");
+        }
+
+        // Code postal français (5 chiffres)
+        const cpRegex = /^\d{5}$/;
+        if (
+            typeof client.Adresse.CP !== "string" ||
+            !client.Adresse.CP.trim()
+        ) {
+            erreurs.push("Le code postal est obligatoire");
+        } else if (!cpRegex.test(client.Adresse.CP.trim())) {
+            erreurs.push("Format de code postal invalide (5 chiffres)");
+        }
+
+        // Ville obligatoire
+        if (
+            typeof client.Adresse.Ville !== "string" ||
+            !client.Adresse.Ville.trim()
+        ) {
+            erreurs.push("La ville est obligatoire");
+        }
+    }
+
+    return { valide: erreurs.length === 0, erreurs };
 }
 
 // ===== FONCTIONS UTILITAIRES (À NE PAS MODIFIER) =====
